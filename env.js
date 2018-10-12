@@ -13,7 +13,7 @@ module.exports = {
         persistence: server.persistence.Memory
     },
       // regulation configuration
-    topic: 'laser:',
+    lasertopic: 'laser:',
     date_format: "dd/mm/yyyy H:MM:ss",
     mysql_date: "yyyy-mm-dd H:MM:ss"
 }
