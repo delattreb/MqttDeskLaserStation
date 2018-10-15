@@ -25,13 +25,15 @@ function updateESPConnected(name, state) {
             log.error(dateFormat(new Date(), env.date_format), 'MySQL connection error');
             throw error;
         }
-        log.debug(dateFormat(new Date(), env.date_format), 'ESP trouvé en BDD ',results.name);
-        if (results.name === name) {
-            // Update ESP State
-            log.debug(dateFormat(new Date(), env.date_format), 'ESP Already exists');
-            let reqsql = 'UPDATE esp SET connected=? WHERE name=?';
-            let params = [state, name];
-            procsql(reqsql, params);
+        if (results.length > 0) {
+            log.debug(dateFormat(new Date(), env.date_format), 'ESP trouvé en BDD ', results[0].name);
+            if (results[0].name.toString() === name) {
+                // Update ESP State
+                log.debug(dateFormat(new Date(), env.date_format), 'ESP Already exists');
+                let reqsql = 'UPDATE esp SET connected=? WHERE name=?';
+                let params = [state, name];
+                procsql(reqsql, params);
+            }
         } else {
             // Insert ESP State
             log.debug(dateFormat(new Date(), env.date_format), 'ESP not exists');
