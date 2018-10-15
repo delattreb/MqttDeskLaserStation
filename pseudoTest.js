@@ -1,6 +1,6 @@
-let mqtt = require('mqtt');
-let env = require('./env');
-let credential = require('./credentials');
+let mqtt = require('mqtt')
+let env = require('./env')
+let credential = require('./credentials')
 
 var options = {
     port: 1884,
@@ -12,8 +12,8 @@ var options = {
     //protocolVersion: 3,
     //clean: true,
     //encoding: 'utf8'
-};
+}
 
-let clientMqtt = mqtt.connect(credential.address, options);
-clientMqtt.publish(env.lasertopic, JSON.stringify({ name: "5C:CF:7F:6B:42:2E", pseudo: "bruno", nblife: "3" }));
-console.log('send message');
+let clientMqtt = mqtt.connect(credential.address, options)
+clientMqtt.publish(env.lasertopic, JSON.stringify({ name: "5C:CF:7F:6B:42:2E", pseudo: "bruno", nblife: "3" }))
+console.log('send message')

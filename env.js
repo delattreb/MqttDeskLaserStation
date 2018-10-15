@@ -1,7 +1,7 @@
 
 // Configuration file
-let log = require('loglevel');
-let server = require('mosca');
+let log = require('loglevel')
+let server = require('mosca')
 
 module.exports = {
     // Log Level Configuration
