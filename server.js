@@ -34,8 +34,8 @@ function updateESPConnected(name, state) {
         } else {
             // Insert ESP State
             log.debug(dateFormat(new Date(), env.date_format), 'ESP not exists');
-            let reqsql = 'INSERT INTO esp (name, state, date) VALUES (?, ?, NOW())';
-            let params = [name, state];
+            let reqsql = 'INSERT INTO esp (??, ??, ??) VALUES (?, ?, NOW())';
+            let params = ['name', 'state', 'date', name, state];
             sql = mysql.format(reqsql, params);
             procsql(reqsql, params);
         }
