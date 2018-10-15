@@ -16,9 +16,30 @@ connection.connect(function () {
 });
 
 function updateESPConnected(name, state) {
-    let reqsql = 'UPDATE esp SET connected=? WHERE name=?';
-    let params = [state, name];
-    procsql(reqsql, params);
+    // Check ESP name before insert
+    let reqsql = 'SELECT name FROM esp WHERE name=?';
+    let params = [name];
+    sql = mysql.format(reqsql, params);
+    connection.query(sql, function (error, results) {
+        if (error) {
+            log.error(dateFormat(new Date(), env.date_format), 'MySQL connection error');
+            throw error;
+        }
+        if (results.name === name) {
+            // Update ESP State
+            log.debug(dateFormat(new Date(), env.date_format), 'ESP Already exists');
+            let reqsql = 'UPDATE esp SET connected=? WHERE name=?';
+            let params = [state, name];
+            procsql(reqsql, params);
+        } else {
+            // Insert ESP State
+            log.debug(dateFormat(new Date(), env.date_format), 'ESP not exists');
+            let reqsql = 'INSERT INTO esp (name, state, date) VALUES (?, ?, NOW())';
+            let params = [name, state];
+            sql = mysql.format(reqsql, params);
+            procsql(reqsql, params);
+        }
+    });
 }
 
 function updateESPState(name, state) {
@@ -28,8 +49,8 @@ function updateESPState(name, state) {
 }
 
 function insert_message(name, message) {
-    let reqsql = 'INSERT INTO data (??, ??, ??) VALUES (?, ?, NOW())';
-    let params = ['name', 'value', 'date', name, message];
+    let reqsql = 'INSERT INTO data (name, value, date) VALUES (?, ?, NOW())';
+    let params = [name, message];
     procsql(reqsql, params);
 }
 
@@ -37,8 +58,8 @@ function procsql(reqsql, params) {
     sql = mysql.format(reqsql, params);
     connection.query(sql, function (error, results) {
         if (error) {
-            //throw error;
             log.error(dateFormat(new Date(), env.date_format), 'MySQL connection error');
+            throw error;
         }
         log.debug(dateFormat(new Date(), env.date_format), results);
     });
