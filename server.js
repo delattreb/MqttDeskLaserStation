@@ -77,6 +77,6 @@ mosca.on('published', publish);
 function publish(packet, client, cb) {
     if (packet.topic.indexOf(env.lasertopic) === 0) {
         log.info(dateFormat(new Date(), env.date_format), 'client', client.id, 'value', packet.payload.toString());
-        log.info(dateFormat(new Date(), env.date_format), packet.payload.pseudo.toString());
+        log.info(dateFormat(new Date(), env.date_format), packet.payload.pseudo);
     }
 }
