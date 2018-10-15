@@ -52,6 +52,7 @@ function procsql(reqsql, params) {
         log.debug(dateFormat(new Date(), env.date_format), results);
     });
 }
+
 // Start program
 mosca = new mosca.Server(env.mosca, function () {
 });
@@ -79,5 +80,9 @@ function publish(packet, client, cb) {
         log.debug(dateFormat(new Date(), env.date_format), 'client', client.id, 'value', packet.payload.toString());
         log.info(dateFormat(new Date(), env.date_format), JSON.parse(packet.payload).pseudo);
         log.info(dateFormat(new Date(), env.date_format), JSON.parse(packet.payload).nblife);
+        let reqsql = 'UPDATE esp SET pseudo=?, nblife=?';
+        let params = [JSON.parse(packet.payload).pseudo, JSON.parse(packet.payload).nblife];
+        sql = mysql.format(reqsql, params);
+        procsql(reqsql, params);
     }
 }
