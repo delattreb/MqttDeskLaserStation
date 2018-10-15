@@ -42,12 +42,6 @@ function updateESPConnected(name, connected) {
     });
 }
 
-function insert_message(name, message) {
-    let reqsql = 'INSERT INTO data (name, value, date) VALUES (?, ?, NOW())';
-    let params = [name, message];
-    procsql(reqsql, params);
-}
-
 function procsql(reqsql, params) {
     sql = mysql.format(reqsql, params);
     connection.query(sql, function (error, results) {
@@ -82,8 +76,8 @@ mosca.on('clientDisconnected', function (client) {
 mosca.on('published', publish);
 function publish(packet, client, cb) {
     if (packet.topic.indexOf(env.lasertopic) === 0) {
-        log.debug(dateFormat(new Date(), env.date_format), 'client', client.id, 'pub', packet.topic.split(':')[1], 'value', packet.payload.toString());
-        let substr = packet.topic.split(':')[1];
-        insert_message(substr, packet.payload);
+        log.info(dateFormat(new Date(), env.date_format), 'client', client.id, 'pub', packet.topic.toString(), 'value', packet.payload.toString());
+        //let substr = packet.topic.split(':')[1];
+        log.info(dateFormat(new Date(), env.date_format), packet.payload.toString());
     }
 }
