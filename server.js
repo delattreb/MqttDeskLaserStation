@@ -76,8 +76,8 @@ mosca.on('clientDisconnected', function (client) {
 mosca.on('published', publish);
 function publish(packet, client, cb) {
     if (packet.topic.indexOf(env.lasertopic) === 0) {
-        log.info(dateFormat(new Date(), env.date_format), 'client', client.id, 'value', packet.payload.toString());
-        let jsonobj = JSON.parse(packet.payload);
-        log.info(dateFormat(new Date(), env.date_format), jsonobj.pseudo);
+        log.debug(dateFormat(new Date(), env.date_format), 'client', client.id, 'value', packet.payload.toString());
+        log.info(dateFormat(new Date(), env.date_format), JSON.parse(packet.payload).pseudo);
+        log.info(dateFormat(new Date(), env.date_format), JSON.parse(packet.payload).nblife);
     }
 }
