@@ -15,7 +15,7 @@ connection.connect(function () {
     log.info(dateFormat(new Date(), env.date_format), 'Database Connected');
 });
 
-function updateESPConnected(name, state) {
+function updateESPConnected(name, connected) {
     // Check ESP name before insert
     let reqsql = 'SELECT name FROM esp WHERE name=?';
     let params = [name];
@@ -31,23 +31,23 @@ function updateESPConnected(name, state) {
                 // Update ESP State
                 log.debug(dateFormat(new Date(), env.date_format), 'ESP Already exists');
                 let reqsql = 'UPDATE esp SET connected=? WHERE name=?';
-                let params = [state, name];
+                let params = [connected, name];
                 procsql(reqsql, params);
             }
         } else {
             // Insert ESP State
             log.debug(dateFormat(new Date(), env.date_format), 'ESP not exists');
             let reqsql = 'INSERT INTO esp (??, ??, ??) VALUES (?, ?, NOW())';
-            let params = ['name', 'state', 'date', name, state];
+            let params = ['name', 'connected', 'date', name, connected];
             sql = mysql.format(reqsql, params);
             procsql(reqsql, params);
         }
     });
 }
 
-function updateESPState(name, state) {
-    let reqsql = 'UPDATE esp SET state=? WHERE name=?';
-    let params = [state, name];
+function updateESPState(name, connected) {
+    let reqsql = 'UPDATE esp SET connected=? WHERE name=?';
+    let params = [connected, name];
     procsql(reqsql, params);
 }
 
