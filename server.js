@@ -80,8 +80,9 @@ function publish(packet, client, cb) {
         log.debug(dateFormat(new Date(), env.date_format), 'client', client.id, 'value', packet.payload.toString());
         log.info(dateFormat(new Date(), env.date_format), JSON.parse(packet.payload).pseudo);
         log.info(dateFormat(new Date(), env.date_format), JSON.parse(packet.payload).nblife);
-        let reqsql = 'UPDATE esp SET pseudo=?, nblife=?';
-        let params = [JSON.parse(packet.payload).pseudo, JSON.parse(packet.payload).nblife];
+        log.info(dateFormat(new Date(), env.date_format), JSON.parse(packet.payload).name);
+        let reqsql = 'UPDATE esp SET pseudo=?, nblife=? WHERE name=?';
+        let params = [JSON.parse(packet.payload).pseudo, JSON.parse(packet.payload).nblife, JSON.parse(packet.payload).name];
         sql = mysql.format(reqsql, params);
         procsql(reqsql, params);
     }

@@ -15,5 +15,5 @@ var options = {
 };
 
 let clientMqtt = mqtt.connect(credential.address, options);
-clientMqtt.publish(env.lasertopic, JSON.stringify({ pseudo: "bruno", nblife: "3" }));
+clientMqtt.publish(env.lasertopic, JSON.stringify({ name: "5C:CF:7F:6B:42:2E", pseudo: "bruno", nblife: "3" }));
 console.log('send message');
