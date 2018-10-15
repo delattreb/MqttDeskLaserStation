@@ -26,17 +26,17 @@ function updateESPConnected(name, connected) {
             throw error;
         }
         if (results.length > 0) {
-            log.debug(dateFormat(new Date(), env.date_format), 'ESP trouvé en BDD ', results[0].name);
+            log.info(dateFormat(new Date(), env.date_format), 'ESP trouvé en BDD ', results[0].name);
             if (results[0].name.toString() === name) {
                 // Update ESP State
-                log.debug(dateFormat(new Date(), env.date_format), 'ESP Already exists');
+                log.info(dateFormat(new Date(), env.date_format), 'ESP Already exists');
                 let reqsql = 'UPDATE esp SET connected=? WHERE name=?';
                 let params = [connected, name];
                 procsql(reqsql, params);
             }
         } else {
             // Insert ESP State
-            log.debug(dateFormat(new Date(), env.date_format), 'ESP not exists');
+            log.info(dateFormat(new Date(), env.date_format), 'ESP not exists');
             let reqsql = 'INSERT INTO esp (??, ??, ??) VALUES (?, ?, NOW())';
             let params = ['name', 'connected', 'date', name, connected];
             sql = mysql.format(reqsql, params);

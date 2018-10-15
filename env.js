@@ -5,7 +5,7 @@ let server = require('mosca');
 
 module.exports = {
     // Log Level Configuration
-    loglevel: log.levels.DEBUG,
+    loglevel: log.levels.INFO,
 
     // Mosca Server configuration
     mosca: {
