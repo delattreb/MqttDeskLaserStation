@@ -34,18 +34,12 @@ function updateESPConnected(name, connected) {
             }
         } else {
             // Insert ESP State
-            let reqsql = 'INSERT INTO esp (??, ??, ??) VALUES (?, ?, NOW())';
-            let params = ['name', 'connected', 'date', name, connected];
+            let reqsql = 'INSERT INTO esp (name, connected, date) VALUES (?, ?, NOW())';
+            let params = [name, connected];
             sql = mysql.format(reqsql, params);
             procsql(reqsql, params);
         }
     });
-}
-
-function updateESPState(name, connected) {
-    let reqsql = 'UPDATE esp SET connected=? WHERE name=?';
-    let params = [connected, name];
-    procsql(reqsql, params);
 }
 
 function insert_message(name, message) {
