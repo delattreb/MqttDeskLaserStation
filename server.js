@@ -61,13 +61,13 @@ mosca.on('ready', function () {
     log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
 })
 mosca.on('subscribed', function (topic, client) {
-    log.info(dateFormat(new Date(), env.date_format), 'Subscribed', client.id, topic)
+    log.info(dateFormat(new Date(), env.date_format), 'Subscribed  ', client.id, topic)
 })
 mosca.on('unsubscribed', function (topic, client) {
     log.info(dateFormat(new Date(), env.date_format), 'Unsubscribed', client.id, topic)
 })
 mosca.on('clientConnected', function (client) {
-    log.info(dateFormat(new Date(), env.date_format), 'Connected', client.id)
+    log.info(dateFormat(new Date(), env.date_format), 'Connected   ', client.id)
     updateESPConnected(client.id, true)
 })
 mosca.on('clientDisconnected', function (client) {

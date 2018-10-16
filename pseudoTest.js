@@ -15,5 +15,5 @@ var options = {
 }
 
 let clientMqtt = mqtt.connect(credential.address, options)
-clientMqtt.publish(env.lasertopic, JSON.stringify({ name: "5C:CF:7F:6B:42:2E", pseudo: "bruno", nblife: "3" }))
+clientMqtt.publish(env.gametopic, JSON.stringify({ jacket: "84:F3:EB:17:E0:46", team: "red" }))
 console.log('send message')
