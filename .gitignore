@@ -5,3 +5,5 @@ nohup.out
 server.log
 server_err.log
 credentials.js
+package-lock.json
+
