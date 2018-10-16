@@ -12,9 +12,10 @@ module.exports = {
         port: 1884,
         persistence: server.persistence.Memory
     },
-      // regulation configuration
+    // regulation configuration
     lasertopic: 'laser',
     gametopic: 'game',
+    teamtopic: 'team',
     date_format: "dd/mm/yyyy H:MM:ss",
     mysql_date: "yyyy-mm-dd H:MM:ss"
 }
