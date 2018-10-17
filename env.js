@@ -16,6 +16,7 @@ module.exports = {
     partytopic: 'party',
     gametopic: 'game',
     teamtopic: 'team',
+    starttopic: 'start',
     date_format: "dd/mm/yyyy H:MM:ss",
     mysql_date: "yyyy-mm-dd H:MM:ss"
 }
