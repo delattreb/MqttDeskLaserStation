@@ -49,7 +49,7 @@ function procsql(reqsql, params) {
             log.error(dateFormat(new Date(), env.date_format), 'MySQL connection error')
             throw error
         }
-        log.debug(dateFormat(new Date(), env.date_format), results)
+        //log.debug(dateFormat(new Date(), env.date_format), results)
     })
 }
 
@@ -76,10 +76,10 @@ mosca.on('clientDisconnected', function (client) {
 })
 mosca.on('published', publish)
 function publish(packet, client, cb) {
-    if (packet.topic.indexOf(env.lasertopic) === 0) {
+    if (packet.topic.indexOf(env.teamtopic) === 0) {
         log.debug(dateFormat(new Date(), env.date_format), 'client', client.id, 'value', packet.payload.toString())
-        let reqsql = 'UPDATE esp SET pseudo=?, nblife=? WHERE name=?'
-        let params = [JSON.parse(packet.payload).pseudo, JSON.parse(packet.payload).nblife, JSON.parse(packet.payload).name]
+        let reqsql = 'UPDATE esp SET pseudo=? WHERE name=?'
+        let params = [JSON.parse(packet.payload).pseudo, JSON.parse(packet.payload).jacket]
         sql = mysql.format(reqsql, params)
         procsql(reqsql, params)
     }
