@@ -74,6 +74,6 @@ mosca.on('clientDisconnected', function (client) {
     log.info(dateFormat(new Date(), env.date_format), 'Disconnected', client.id)
     updateESPConnected(client.id, false)
 })
-mosca.on('published', publish)
-function publish(packet, client, cb) {
-}
+//mosca.on('published', publish)
+//function publish(packet, client, cb) {
+//}
