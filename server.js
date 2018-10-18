@@ -75,7 +75,7 @@ mosca.on('clientDisconnected', function (client) {
 })
 mosca.on('published', publish)
 function publish(packet, client, cb) {
-    if ( typeof client !== 'undefined' && typeof packet !== 'undefined') {
+    if (typeof client !== 'undefined' && typeof packet !== 'undefined') {
         log.debug(dateFormat(new Date(), env.date_format), 'Client', client.id, 'Topic', packet.topic)
         log.debug(dateFormat(new Date(), env.date_format), packet.payload.toString())
     }
@@ -85,10 +85,14 @@ function publish(packet, client, cb) {
         sql = mysql.format(reqsql, params)
         procsql(reqsql, params)
     }
+    if (packet.topic.indexOf(env.gametopic) === 0) {
+        let reqsql = 'INSERT INTO histo (killer, killed, target) VALUES (?,?,?)'
+        let params = [JSON.parse(packet.payload).id, client.id, JSON.parse(packet.payload).target]
+        sql = mysql.format(reqsql, params)
+        procsql(reqsql, params)
+    }
     if (packet.topic.indexOf(env.partytopic) === 0) {
     }
     if (packet.topic.indexOf(env.starttopic) === 0) {
-    }
-    if (packet.topic.indexOf(env.gametopic) === 0) {
     }
 }
