@@ -53,18 +53,6 @@ function procsql(reqsql, params) {
     })
 }
 
-function retprocsql(reqsql, params) {
-    sql = mysql.format(reqsql, params);
-    connection.query(sql, function (error, results) {
-        if (error) {
-            log.error(dateFormat(new Date(), env.date_format), 'MySQL connection error')
-            throw error
-        }
-        log.error(dateFormat(new Date(), env.date_format), results)
-        return parseFloat(results[0].id);
-    });
-}
-
 // Start program
 mosca = new mosca.Server(env.mosca, function () {
 })
@@ -99,15 +87,26 @@ function publish(packet, client, cb) {
     }
     if (packet.topic.indexOf(env.gametopic) === 0) {
         //Get id killed
-        let reqsql = 'SELECT id FROM esp WHERE name=?'
+        let reqsql = 'SELECT id, pseudo FROM esp WHERE name=?'
         let params = [client.id]
         mysql.format(reqsql, params)
-        let idkilled = retprocsql(reqsql, params)
+        sql = mysql.format(reqsql, params);
+        connection.query(sql, function (error, results) {
+            if (error) {
+                log.error(dateFormat(new Date(), env.date_format), 'MySQL connection error')
+                throw error
+            }
+            let idkilled = parseInt(results[0].id)
+            let pseudo = results[0].pseudo
+        });
+        log.error(dateFormat(new Date(), env.date_format), idkilled, pseudo)
 
         reqsql = 'INSERT INTO histo (killer, killed, target) VALUES (?, ?, ?)'
         params = [JSON.parse(packet.payload).id, idkilled, JSON.parse(packet.payload).target]
         mysql.format(reqsql, params)
         procsql(reqsql, params)
+
+        //Send pseudo to killed
     }
     if (packet.topic.indexOf(env.partytopic) === 0) {
     }
