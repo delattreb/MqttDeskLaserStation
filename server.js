@@ -61,7 +61,7 @@ function retprocsql(reqsql, params) {
             throw error
         }
         log.error(dateFormat(new Date(), env.date_format), results)
-        return parseFloat(results[0]);
+        return parseFloat(results[0].id);
     });
 }
 
