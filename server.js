@@ -76,11 +76,4 @@ mosca.on('clientDisconnected', function (client) {
 })
 mosca.on('published', publish)
 function publish(packet, client, cb) {
-    if (packet.topic.indexOf(env.teamtopic) === 0) {
-        log.debug(dateFormat(new Date(), env.date_format), 'client', client.id, 'value', packet.payload.toString())
-        let reqsql = 'UPDATE esp SET pseudo=? WHERE name=?'
-        let params = [JSON.parse(packet.payload).pseudo, JSON.parse(packet.payload).jacket]
-        sql = mysql.format(reqsql, params)
-        procsql(reqsql, params)
-    }
 }
