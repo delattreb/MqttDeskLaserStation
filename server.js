@@ -53,6 +53,18 @@ function procsql(reqsql, params) {
     })
 }
 
+function retprocsql(reqsql, params) {
+    sql = mysql.format(reqsql, params);
+    connection.query(sql, function (error, results) {
+        if (error) {
+            log.error(dateFormat(new Date(), env.date_format), 'MySQL connection error');
+            throw error
+        }
+        //log.debug(dateFormat(new Date(), env.date_format), results);
+        return parseFloat(results[0].id);
+    });
+}
+
 // Start program
 mosca = new mosca.Server(env.mosca, function () {
 })
@@ -86,8 +98,14 @@ function publish(packet, client, cb) {
         procsql(reqsql, params)
     }
     if (packet.topic.indexOf(env.gametopic) === 0) {
-        let reqsql = 'INSERT INTO histo (killer, killed, target) VALUES (?,?,?)'
-        let params = [JSON.parse(packet.payload).id, client.id, JSON.parse(packet.payload).target]
+        //Get id killed
+        let reqsql = 'SELECT id FROM esp WHERE name=?'
+        let params = [client.id]
+        sql = mysql.format(reqsql, params)
+        let idkilled = retprocsql(reqsql, params)
+
+        reqsql = 'INSERT INTO histo (killer, killed, target) VALUES (?, ?, ?)'
+        params = [JSON.parse(packet.payload).id, idkilled, JSON.parse(packet.payload).target]
         sql = mysql.format(reqsql, params)
         procsql(reqsql, params)
     }
