@@ -75,7 +75,7 @@ mosca.on('clientDisconnected', function (client) {
 })
 mosca.on('published', publish)
 function publish(packet, client, cb) {
-    if (client.id.length > 0) {
+    if ( typeof client !== 'undefined' && typeof packet !== 'undefined') {
         log.debug(dateFormat(new Date(), env.date_format), 'Client', client.id, 'Topic', packet.topic)
         log.debug(dateFormat(new Date(), env.date_format), packet.payload.toString())
     }
