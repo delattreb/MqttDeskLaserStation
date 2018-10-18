@@ -79,12 +79,16 @@ function publish(packet, client, cb) {
         log.debug(dateFormat(new Date(), env.date_format), 'Client', client.id, 'Topic', packet.topic)
         log.debug(dateFormat(new Date(), env.date_format), packet.payload.toString())
     }
+    // team Topic
     if (packet.topic.indexOf(env.teamtopic) === 0) {
         let reqsql = 'UPDATE esp SET pseudo=? WHERE name=?'
         let params = [JSON.parse(packet.payload).pseudo, JSON.parse(packet.payload).jacket]
         mysql.format(reqsql, params)
         procsql(reqsql, params)
     }
+
+
+    //Game Topic
     if (packet.topic.indexOf(env.gametopic) === 0) {
         //Get id killed
         let reqsql = 'SELECT id, pseudo FROM esp WHERE name=?'
@@ -98,15 +102,16 @@ function publish(packet, client, cb) {
             }
             let idkilled = parseInt(results[0].id)
             let pseudo = results[0].pseudo
+
+            log.error(dateFormat(new Date(), env.date_format), idkilled, pseudo)
+
+            reqsql = 'INSERT INTO histo (killer, killed, target) VALUES (?, ?, ?)'
+            params = [JSON.parse(packet.payload).id, idkilled, JSON.parse(packet.payload).target]
+            mysql.format(reqsql, params)
+            procsql(reqsql, params)
+
+            //Send pseudo to killed
         });
-        log.error(dateFormat(new Date(), env.date_format), idkilled, pseudo)
-
-        reqsql = 'INSERT INTO histo (killer, killed, target) VALUES (?, ?, ?)'
-        params = [JSON.parse(packet.payload).id, idkilled, JSON.parse(packet.payload).target]
-        mysql.format(reqsql, params)
-        procsql(reqsql, params)
-
-        //Send pseudo to killed
     }
     if (packet.topic.indexOf(env.partytopic) === 0) {
     }
