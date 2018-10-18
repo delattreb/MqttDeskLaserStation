@@ -99,7 +99,7 @@ function publish(packet, client, cb) {
     }
     if (packet.topic.indexOf(env.gametopic) === 0) {
         //Get id killed
-        let reqsql = 'SELECT id FROM esp WHERE name=?'
+        let reqsql = 'SELECT id FROM esp WHERE name="?"'
         let params = [client.id]
         sql = mysql.format(reqsql, params)
         let idkilled = retprocsql(reqsql, params)
