@@ -23,23 +23,24 @@ clientMqtt.subscribe(env.partytopic)
 clientMqtt.subscribe(env.starttopic)
 
 clientMqtt.on('connect', function () {
-    log.info(dateFormat(new Date(), env.date_format), 'Connected to:', credential.address);
-});
+    log.info(dateFormat(new Date(), env.date_format), 'Connected to', credential.address)
+})
 
 connection.connect(function () {
-    log.info(dateFormat(new Date(), env.date_format), 'Database Connected');
-});
+    log.info(dateFormat(new Date(), env.date_format), 'Database Connected')
+})
 
-clientMqtt.on('published', publish)
-function publish(packet, client, cb) {
-    log.debug(dateFormat(new Date(), env.date_format), 'Client', client.id, 'Topic', packet.topic, 'Payload', packet.payload.toString())
-    if (packet.topic.indexOf(env.teamtopic) === 0) {
+clientMqtt.on('message', (topic, message) => {
+    log.debug(dateFormat(new Date(), env.date_format), 'Topic', topic)
+    log.debug(dateFormat(new Date(), env.date_format), message.toString())
+    if (topic.indexOf(env.teamtopic) === 0) {
         let reqsql = 'UPDATE esp SET pseudo=? WHERE name=?'
-        let params = [JSON.parse(packet.payload).pseudo, JSON.parse(packet.payload).jacket]
+        let params = [JSON.parse(message).pseudo, JSON.parse(message).jacket]
         sql = mysql.format(reqsql, params)
         procsql(reqsql, params)
     }
-}
+})
+
 
 //
 // MySQL
@@ -49,8 +50,8 @@ function procsql(reqsql, params) {
     connection.query(sql, function (error, results) {
         if (error) {
             log.error(dateFormat(new Date(), env.date_format), 'MySQL connection error')
+            throw error
         }
-        log.debug(dateFormat(new Date(), env.date_format), results)
-        return parseFloat(results[0].gap)
+        //log.debug(dateFormat(new Date(), env.date_format), results)
     })
 }

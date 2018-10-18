@@ -5,7 +5,7 @@ let credential = require('./credentials')
 var options = {
     port: 1884,
     //host: 'mqtt://mycube.dscloud.me',
-    clientId: 'SmartPhoneTest'
+    clientId: 'SmartPhone'
     //keepalive: 60,
     //reconnectPeriod: 1000,
     //protocolId: 'MQIsdp',
@@ -19,4 +19,4 @@ clientMqtt.publish(env.teamtopic, JSON.stringify({ jacket: "84:F3:EB:17:E0:46", 
 //clientMqtt.publish(env.partytopic, JSON.stringify({ poptime: "8", start: "9" }))
 //clientMqtt.publish(env.starttopic, JSON.stringify({ go: "1" }))
 //clientMqtt.publish(env.starttopic, JSON.stringify({ go: "0" }))
-console.log('send message')
+console.log('Message send')
