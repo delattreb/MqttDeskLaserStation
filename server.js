@@ -57,10 +57,10 @@ function retprocsql(reqsql, params) {
     sql = mysql.format(reqsql, params);
     connection.query(sql, function (error, results) {
         if (error) {
-            log.error(dateFormat(new Date(), env.date_format), 'MySQL connection error');
+            log.error(dateFormat(new Date(), env.date_format), 'MySQL connection error')
             throw error
         }
-        //log.debug(dateFormat(new Date(), env.date_format), results);
+        log.error(dateFormat(new Date(), env.date_format), results)
         return parseFloat(results[0]);
     });
 }
@@ -102,7 +102,6 @@ function publish(packet, client, cb) {
         let reqsql = 'SELECT id FROM esp WHERE name="?"'
         let params = [client.id]
         mysql.format(reqsql, params)
-        log.debug(dateFormat(new Date(), env.date_format), reqsql)
         let idkilled = retprocsql(reqsql, params)
 
         reqsql = 'INSERT INTO histo (killer, killed, target) VALUES (?, ?, ?)'
