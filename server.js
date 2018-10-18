@@ -56,7 +56,6 @@ function procsql(reqsql, params) {
 // Start program
 mosca = new mosca.Server(env.mosca, function () {
 })
-
 mosca.on('ready', function () {
     log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
 })
@@ -74,6 +73,14 @@ mosca.on('clientDisconnected', function (client) {
     log.info(dateFormat(new Date(), env.date_format), 'Disconnected', client.id)
     updateESPConnected(client.id, false)
 })
-//mosca.on('published', publish)
-//function publish(packet, client, cb) {
-//}
+mosca.on('published', publish)
+function publish(packet, client, cb) {
+    log.debug(dateFormat(new Date(), env.date_format), 'Client', client.id, 'Topic', packet.topic)
+    log.debug(dateFormat(new Date(), env.date_format), packet.payload.toString())
+    if (packet.topic.indexOf(env.teamtopic) === 0) {
+        let reqsql = 'UPDATE esp SET pseudo=? WHERE name=?'
+        let params = [JSON.parse(packet.payload).pseudo, JSON.parse(packet.payload).jacket]
+        sql = mysql.format(reqsql, params)
+        procsql(reqsql, params)
+    }
+}

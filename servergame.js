@@ -23,12 +23,13 @@ clientMqtt.subscribe(env.partytopic)
 clientMqtt.subscribe(env.starttopic)
 
 clientMqtt.on('connect', function () {
-    log.info(dateFormat(new Date(), env.date_format), 'Connected to', credential.address)
+    log.info(dateFormat(new Date(), env.date_format), 'Connected MQTT')
 })
 
 connection.connect(function () {
     log.info(dateFormat(new Date(), env.date_format), 'Database Connected')
 })
+
 
 clientMqtt.on('message', (topic, message) => {
     log.debug(dateFormat(new Date(), env.date_format), 'Topic', topic)
@@ -40,7 +41,6 @@ clientMqtt.on('message', (topic, message) => {
         procsql(reqsql, params)
     }
 })
-
 
 //
 // MySQL
