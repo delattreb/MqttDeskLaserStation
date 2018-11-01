@@ -16,7 +16,6 @@ module.exports = {
             //level: 'debug'
         },
         secure: {
-            port: 8444,
             keyPath: '/home/dietpi/certs/MyKey.key',
             certPath: '/home/dietpi/certs/MyCertificate.crt'
         },
