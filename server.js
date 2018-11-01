@@ -93,8 +93,8 @@ function setup() {
             var authorizer = new Authorizer();
 
             try {
+                log.log(dateFormat(new Date(), env.date_format), data)
                 authorizer.users = JSON.parse(data);
-                log.debug(dateFormat(new Date(), env.date_format), 'User authorized', authorizer.users)
                 cb(null, authorizer);
             } catch (err) {
                 log.error(dateFormat(new Date(), env.date_format), 'User error')
