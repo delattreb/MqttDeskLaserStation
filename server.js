@@ -81,6 +81,30 @@ function setup() {
     server.authorizeSubscribe = authorizeSubscribe;
   }
 
+  function loadAuthorizer(credentialsFile, cb) {
+    if (credentialsFile) {
+        fs.readFile(credentialsFile, function (err, data) {
+            if (err) {
+                log.error(dateFormat(new Date(), env.date_format), 'FS authorizer error')
+                cb(err);
+                return;
+            }
+
+            var authorizer = new Authorizer();
+
+            try {
+                authorizer.users = JSON.parse(data);
+                cb(null, authorizer);
+            } catch (err) {
+                log.error(dateFormat(new Date(), env.date_format), 'FS user error')
+                cb(err);
+            }
+        });
+    } else {
+        cb(null, null);
+    }
+}
+
 function setup() {
     // setup authorizer
     loadAuthorizer(env.mosacacredentials, function (err, authorizer) {
@@ -96,28 +120,6 @@ function setup() {
     });
 
     // you are good to go!
-}
-
-function loadAuthorizer(credentialsFile, cb) {
-    if (credentialsFile) {
-        fs.readFile(credentialsFile, function (err, data) {
-            if (err) {
-                cb(err);
-                return;
-            }
-
-            var authorizer = new Authorizer();
-
-            try {
-                authorizer.users = JSON.parse(data);
-                cb(null, authorizer);
-            } catch (err) {
-                cb(err);
-            }
-        });
-    } else {
-        cb(null, null);
-    }
 }
 
 mosca = new mosca.Server(env.mosca, function () {
