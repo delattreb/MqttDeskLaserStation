@@ -101,17 +101,16 @@ function loadAuthorizer(credentialsFile, cb) {
 
 function setup() {
     // setup authorizer
-    loadAuthorizer(env.mosacacredentials, function (err, authorizer) {
-        if (err) {
-            log.debug(dateFormat(new Date(), env.date_format), 'Error', err)
-        }
+    //loadAuthorizer(env.mosacacredentials, function (err, authorizer) {
+    //    if (err) {
+    //    }
 
-        if (authorizer) {
+    //    if (authorizer) {
             mosca.authenticate = authenticate;
             mosca.authorizeSubscribe = authorizeSubscribe;
             mosca.authorizePublish = authorizePublish;
-        }
-    });
+     //   }
+    //});
     log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
 }
 
