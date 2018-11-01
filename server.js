@@ -74,46 +74,48 @@ var authorizeSubscribe = function (client, topic, callback) {
 }
 
 function loadAuthorizer(credentialsFile, cb) {
-	if (credentialsFile) {
-		fs.readFile(credentialsFile, function(err, data) {
-			if (err) {
-				cb(err);
-				return;
-			}
+    if (credentialsFile) {
+        fs.readFile(credentialsFile, function (err, data) {
+            if (err) {
+                cb(err);
+                return;
+            }
 
-			var authorizer = new Authorizer();
+            var authorizer = new Authorizer();
 
-			try {
-				authorizer.users = JSON.parse(data);
-				cb(null, authorizer);
-			} catch(err) {
-				cb(err);
-			}
-		});
-	} else {
-		cb(null, null);
-	}
+            try {
+                authorizer.users = JSON.parse(data);
+                cb(null, authorizer);
+            } catch (err) {
+                cb(err);
+            }
+        });
+    } else {
+        cb(null, null);
+    }
 }
 
 function setup() {
-    loadAuthorizer(env.mosacacredentials, function(err, authorizer) {
-	    if (err) {
-		    // handle error here
-	    }
+    loadAuthorizer(env.mosacacredentials, function (err, authorizer) {
+        if (err) {
+            // handle error here
+        }
 
-	    if (authorizer) {
-		    mosca.authenticate = authorizer.authenticate;
-		    mosca.authorizeSubscribe = authorizer.authorizeSubscribe;
-		    mosca.authorizePublish = authorizer.authorizePublish;
-	    }
-	});
+        if (authorizer) {
+            mosca.authenticate = authorizer.authenticate;
+            mosca.authorizeSubscribe = authorizer.authorizeSubscribe;
+            mosca.authorizePublish = authorizer.authorizePublish;
+        }
+    });
     log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
 }
 
-mosca = new mosca.Server(env.mosca, function () {
-})
+mosca = new mosca.Server(env.mosca, setup)
 mosca.on('ready', function () {
     log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
+})
+mosca.on('error', function (err) {
+    log.info(dateFormat(new Date(), env.date_format), 'Error       ', err)
 })
 mosca.on('subscribed', function (topic, client) {
     log.info(dateFormat(new Date(), env.date_format), 'Subscribed  ', client.id, topic)

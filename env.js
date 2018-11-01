@@ -11,10 +11,10 @@ module.exports = {
     mosca: {
         port: 1884,
         persistence: server.persistence.Memory,
-        secure: {
-            keyPath: '/home/dietpi/certs/MyKey.key',
-            certPath: '/home/dietpi/certs/MyCertificate.crt'
-        },
+        //secure: {
+        //    keyPath: '/home/dietpi/certs/MyKey.key',
+        //    certPath: '/home/dietpi/certs/MyCertificate.crt'
+        //},
         logger: {
             name: 'MoscaServer',
             level: 'debug'
