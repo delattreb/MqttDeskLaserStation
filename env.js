@@ -9,14 +9,14 @@ module.exports = {
     // Mosca Server configuration
     mosacacredentials: '/home/dietpi/MqttDeskLaserStation/credentials.json',
     mosca: {
-        port: 8444,
+        port: 1884,
         persistence: server.persistence.Memory,
         logger: {
             name: 'MoscaServer',
             level: 'debug'
         },
         secure: {
-            port: 8444,
+            port: 1884,
             keyPath: '/home/dietpi/certs/MyKey.key',
             certPath: '/home/dietpi/certs/MyCertificate.crt'
         },
@@ -24,7 +24,7 @@ module.exports = {
 
     // MQTT configuration
     mqttoptions: {
-        port: 8444,
+        port: 1884,
         clientId: 'Smartphone',
         username: "dietpi",
         password: "infected"
