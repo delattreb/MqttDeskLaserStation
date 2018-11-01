@@ -56,23 +56,6 @@ function procsql(reqsql, params) {
 }
 
 // Start program
-var authenticate = function (client, username, password, callback) {
-    log.info(dateFormat(new Date(), env.date_format), 'auth')
-    var authorized = (username === 'dietpi' && password.toString() === 'infected');
-    if (authorized) client.user = username;
-    callback(null, authorized);
-}
-
-var authorizePublish = function (client, topic, payload, callback) {
-    //var auth = true;
-    callback(null, client.user == topic.split('/')[1]);
-}
-
-var authorizeSubscribe = function (client, topic, callback) {
-    //var auth = true;
-    callback(null, client.user == topic.split('/')[1]);
-}
-
 function loadAuthorizer(credentialsFile, cb) {
     if (credentialsFile) {
         fs.readFile(credentialsFile, function (err, data) {
@@ -112,7 +95,6 @@ function setup() {
 
 mosca = new mosca.Server(env.mosca, setup)
 mosca.on('ready', function () {
-    log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
 })
 mosca.on('error', function (err) {
     log.info(dateFormat(new Date(), env.date_format), 'Error       ', err)
