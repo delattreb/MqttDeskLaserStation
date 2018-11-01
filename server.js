@@ -77,12 +77,6 @@ var authorizeSubscribe = function (client, topic, callback) {
     callback(null, client.user == topic.split('/')[1]);
 }
 
-function setup() {
-    server.authenticate = authenticate;
-    server.authorizePublish = authorizePublish;
-    server.authorizeSubscribe = authorizeSubscribe;
-}
-
 function loadAuthorizer(credentialsFile, cb) {
     if (credentialsFile) {
         fs.readFile(credentialsFile, function (err, data) {
@@ -106,9 +100,9 @@ function loadAuthorizer(credentialsFile, cb) {
 }
 
 function setup() {
-    server.authenticate = authenticate;
-    server.authorizePublish = authorizePublish;
-    server.authorizeSubscribe = authorizeSubscribe;
+    mosca.authenticate = authenticate;
+    mosca.authorizePublish = authorizePublish;
+    mosca.authorizeSubscribe = authorizeSubscribe;
     log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
 }
 
