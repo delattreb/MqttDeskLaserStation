@@ -103,13 +103,13 @@ function setup() {
     // setup authorizer
     loadAuthorizer(env.mosacacredentials, function (err, authorizer) {
         if (err) {
-            log.debug(dateFormat(new Date(), env.date_format), 'Error', 'loadAuthorizer')
+            log.debug(dateFormat(new Date(), env.date_format), 'Error', err)
         }
 
         if (authorizer) {
-            mosca.authenticate = authorizer.authenticate;
-            mosca.authorizeSubscribe = authorizer.authorizeSubscribe;
-            mosca.authorizePublish = authorizer.authorizePublish;
+            mosca.authenticate = authenticate;
+            mosca.authorizeSubscribe = authorizeSubscribe;
+            mosca.authorizePublish = authorizePublish;
         }
     });
     log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
