@@ -57,6 +57,7 @@ function procsql(reqsql, params) {
 
 // Start program
 var authenticate = function (client, username, password, callback) {
+    log.info(dateFormat(new Date(), env.date_format), 'auth')
     var authorized = (username === 'dietpi' && password.toString() === 'infected');
     if (authorized) client.user = username;
     callback(null, authorized);
