@@ -76,11 +76,10 @@ function setup() {
     mosca.authenticate = authenticate;
     mosca.authorizeSubscribe = authorizeSubscribe;
     mosca.authorizePublish = authorizePublish;
-
     log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
 }
 
-mosca = new mosca.Server(env.mosca)
+mosca = new mosca.Server(env.moscasetting)
 mosca.on('ready', setup)
 mosca.on('subscribed', function (topic, client) {
     log.info(dateFormat(new Date(), env.date_format), 'Subscribed  ', client.id, topic)
