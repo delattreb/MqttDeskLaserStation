@@ -85,7 +85,6 @@ function setup() {
     if (credentialsFile) {
         fs.readFile(credentialsFile, function (err, data) {
             if (err) {
-                log.error(dateFormat(new Date(), env.date_format), 'FS error')
                 cb(err);
                 return;
             }
@@ -93,7 +92,6 @@ function setup() {
             var authorizer = new Authorizer();
 
             try {
-                log.log(dateFormat(new Date(), env.date_format), data)
                 authorizer.users = JSON.parse(data);
                 cb(null, authorizer);
             } catch (err) {
