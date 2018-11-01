@@ -1,5 +1,7 @@
 let mysql = require('mysql')
 let mosca = require('mosca')
+let fs = require("fs");
+let Authorizer = require("mosca/lib/authorizer");
 let dateFormat = require('dateformat')
 let log = require('loglevel')
 let env = require('./env')
@@ -54,10 +56,48 @@ function procsql(reqsql, params) {
 }
 
 // Start program
-mosca = new mosca.Server(env.mosca, function () {
-})
-mosca.on('ready', function () {
+function loadAuthorizer(credentialsFile, cb) {
+    if (credentialsFile) {
+        fs.readFile(credentialsFile, function (err, data) {
+            if (err) {
+                cb(err);
+                return;
+            }
+
+            var authorizer = new Authorizer();
+
+            try {
+                authorizer.users = JSON.parse(data);
+                cb(null, authorizer);
+            } catch (err) {
+                cb(err);
+            }
+        });
+    } else {
+        cb(null, null);
+    }
+}
+
+function setup() {
+    loadAuthorizer(env.mosacacredentials, function (err, authorizer) {
+        if (err) {
+            // handle error here
+        }
+
+        if (authorizer) {
+            mosca.authenticate = authorizer.authenticate;
+            mosca.authorizeSubscribe = authorizer.authorizeSubscribe;
+            mosca.authorizePublish = authorizer.authorizePublish;
+        }
+    });
     log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
+}
+
+mosca = new mosca.Server(env.mosca, setup)
+mosca.on('ready', function () {
+})
+mosca.on('error', function (err) {
+    log.info(dateFormat(new Date(), env.date_format), 'Error       ', err)
 })
 mosca.on('subscribed', function (topic, client) {
     log.info(dateFormat(new Date(), env.date_format), 'Subscribed  ', client.id, topic)
