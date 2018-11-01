@@ -74,12 +74,9 @@ var authorizeSubscribe = function (client, topic, callback) {
 }
 
 function loadAuthorizer(credentialsFile, cb) {
-    log.debug(dateFormat(new Date(), env.date_format), 'authen')
     if (credentialsFile) {
         fs.readFile(credentialsFile, function (err, data) {
-            log.debug(dateFormat(new Date(), env.date_format), 'file')
             if (err) {
-                log.debug(dateFormat(new Date(), env.date_format), 'file erroe')
                 cb(err);
                 return;
             }
@@ -87,7 +84,6 @@ function loadAuthorizer(credentialsFile, cb) {
             var authorizer = new Authorizer();
 
             try {
-                log.debug(dateFormat(new Date(), env.date_format), 'authenrizer')
                 authorizer.users = JSON.parse(data);
                 cb(null, authorizer);
             } catch (err) {
