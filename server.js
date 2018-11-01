@@ -56,69 +56,35 @@ function procsql(reqsql, params) {
 }
 
 // Start program
-// Accepts the connection if the username and password are valid
 var authenticate = function (client, username, password, callback) {
     var authorized = (username === 'dietpi' && password.toString() === 'infected');
     if (authorized) client.user = username;
     callback(null, authorized);
 }
 
-// In this case the client authorized as alice can publish to /users/alice taking
-// the username from the topic and verifing it is the same of the authorized user
 var authorizePublish = function (client, topic, payload, callback) {
     //var auth = true;
     callback(null, client.user == topic.split('/')[1]);
 }
 
-// In this case the client authorized as alice can subscribe to /users/alice taking
-// the username from the topic and verifing it is the same of the authorized user
 var authorizeSubscribe = function (client, topic, callback) {
     //var auth = true;
     callback(null, client.user == topic.split('/')[1]);
 }
 
-function loadAuthorizer(credentialsFile, cb) {
-    if (credentialsFile) {
-        fs.readFile(credentialsFile, function (err, data) {
-            if (err) {
-                cb(err);
-                return;
-            }
-
-            var authorizer = new Authorizer();
-
-            try {
-                authorizer.users = JSON.parse(data);
-                cb(null, authorizer);
-            } catch (err) {
-                cb(err);
-            }
-        });
-    } else {
-        cb(null, null);
-    }
-}
-
 function setup() {
-    // setup authorizer
-    //loadAuthorizer(env.mosacacredentials, function (err, authorizer) {
-    //    if (err) {
-    //    }
+    mosca.authenticate = authenticate;
+    mosca.authorizeSubscribe = authorizeSubscribe;
+    mosca.authorizePublish = authorizePublish;
 
-    //    if (authorizer) {
-            mosca.authenticate = authenticate;
-            mosca.authorizeSubscribe = authorizeSubscribe;
-            mosca.authorizePublish = authorizePublish;
-     //   }
-    //});
     log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
 }
 
 mosca = new mosca.Server(env.mosca)
 mosca.on('ready', setup)
 mosca.on("error", function (err) {
-    log.error(dateFormat(new Date(), env.date_format), 'Error  ', err)
-});
+    log.error(dateFormat(new Date(), env.date_format), 'Error  ')
+})
 mosca.on('subscribed', function (topic, client) {
     log.info(dateFormat(new Date(), env.date_format), 'Subscribed  ', client.id, topic)
 })

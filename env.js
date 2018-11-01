@@ -11,7 +11,6 @@ module.exports = {
     mosca: {
         port: 1884,
         persistence: server.persistence.Memory,
-        host: "127.0.0.1",
         secure: {
             keyPath: "/home/dietpi/certs/MyKey.key",
             certPath: "/home/dietpi/certs/MyCertificate.crt"
