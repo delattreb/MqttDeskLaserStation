@@ -1,7 +1,7 @@
 let mysql = require('mysql')
 let mosca = require('mosca')
 let fs = require("fs");
-let Authorizer = require("mosca/lib/authorizer");
+let authorizer = require("mosca/lib/authorizer");
 let dateFormat = require('dateformat')
 let log = require('loglevel')
 let env = require('./env')
@@ -74,9 +74,17 @@ var authorizeSubscribe = function (client, topic, callback) {
 }
 
 function setup() {
-    mosca.authenticate = authenticate;
-    mosca.authorizeSubscribe = authorizeSubscribe;
-    mosca.authorizePublish = authorizePublish;
+    loadAuthorizer(env.mosacacredentials, function(err, authorizer) {
+	    if (err) {
+		    // handle error here
+	    }
+
+	    if (authorizer) {
+		    mosca.authenticate = authorizer.authenticate;
+		    mosca.authorizeSubscribe = authorizer.authorizeSubscribe;
+		    mosca.authorizePublish = authorizer.authorizePublish;
+	    }
+	});
     log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
 }
 
