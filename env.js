@@ -13,7 +13,7 @@ module.exports = {
         persistence: server.persistence.Memory,
         logger: {
             name: 'MoscaServer',
-            level: 'debug'
+            level: 'info'
         },
         //secure: {
         //    keyPath: '/home/dietpi/certs/MyKey.key',
