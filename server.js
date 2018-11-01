@@ -103,7 +103,7 @@ function setup() {
     // setup authorizer
     loadAuthorizer(env.mosacacredentials, function (err, authorizer) {
         if (err) {
-            // handle error here
+            log.debug(dateFormat(new Date(), env.date_format), 'Error', 'loadAuthorizer')
         }
 
         if (authorizer) {
@@ -115,12 +115,8 @@ function setup() {
     log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
 }
 
-mosca = new mosca.Server(env.mosca, function () {
-})
-mosca.on('ready', setup);
-//{
-//    log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
-//})
+mosca = new mosca.Server(env.mosca)
+mosca.on('ready', setup)
 mosca.on("error", function (err) {
     log.error(dateFormat(new Date(), env.date_format), 'Error  ', err)
 });
