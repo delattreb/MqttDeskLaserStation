@@ -109,7 +109,7 @@ function setup() {
     server.authenticate = authenticate;
     server.authorizePublish = authorizePublish;
     server.authorizeSubscribe = authorizeSubscribe;
-    log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running.  ')
+    log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
 }
 
 mosca = new mosca.Server(env.mosca, function () {
@@ -118,8 +118,7 @@ mosca.on('ready', setup);
 //{
 //    log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
 //})
-
-server.on("error", function (err) {
+mosca.on("error", function (err) {
     log.error(dateFormat(new Date(), env.date_format), 'Error  ', err)
 });
 mosca.on('subscribed', function (topic, client) {
