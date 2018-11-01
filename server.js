@@ -73,6 +73,28 @@ var authorizeSubscribe = function (client, topic, callback) {
     callback(null, client.user == topic.split('/')[1]);
 }
 
+function loadAuthorizer(credentialsFile, cb) {
+	if (credentialsFile) {
+		fs.readFile(credentialsFile, function(err, data) {
+			if (err) {
+				cb(err);
+				return;
+			}
+
+			var authorizer = new Authorizer();
+
+			try {
+				authorizer.users = JSON.parse(data);
+				cb(null, authorizer);
+			} catch(err) {
+				cb(err);
+			}
+		});
+	} else {
+		cb(null, null);
+	}
+}
+
 function setup() {
     loadAuthorizer(env.mosacacredentials, function(err, authorizer) {
 	    if (err) {
