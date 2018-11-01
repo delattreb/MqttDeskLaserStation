@@ -5,11 +5,10 @@ let server = require('mosca')
 module.exports = {
     // Log Level Configuration
     loglevel: log.levels.DEBUG,
-    mqttport: 1884,
 
     // Mosca Server configuration
     mosca: {
-        port: this.mqttport,
+        port: 1884,
         persistence: server.persistence.Memory,
         secure: {
             keyPath: "/home/dietpi/certs/MyKey.key",
@@ -19,7 +18,7 @@ module.exports = {
 
     // MQTT regulation
     mqttoptions: {
-        port: this.mqttport,
+        port: 1884,
         clientId: 'Smartphone'
     },
 
