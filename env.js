@@ -5,11 +5,12 @@ let server = require('mosca')
 module.exports = {
     // Log Level Configuration
     loglevel: log.levels.DEBUG,
+    mqttport: 1884,
 
     // Mosca Server configuration
     mosacacredentials: "/home/dietpi/MqttDeskLaserStation/credentials.json",
     mosca: {
-        port: 1884,
+        port: mqttport,
         persistence: server.persistence.Memory,
         logger: {
             name: 'MoscaServer',
@@ -23,7 +24,7 @@ module.exports = {
 
     // MQTT configuration
     mqttoptions: {
-        port: 1884,
+        port: mqttport,
         clientId: 'Smartphone',
         username: "dietpi",
         password: "infected"
