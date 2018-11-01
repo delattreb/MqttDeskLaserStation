@@ -6,12 +6,20 @@ let server = require('mosca')
 module.exports = {
     // Log Level Configuration
     loglevel: log.levels.DEBUG,
+    mqttport : 1884,
 
     // Mosca Server configuration
     mosca: {
-        port: 1884,
+        port: this.mqttport,
         persistence: server.persistence.Memory
     },
+
+    // MQTT regulation
+    mqttoptions: {
+        port: this.mqttport,
+        clientId: 'Smartphone'
+    },
+    
     // regulation configuration
     partytopic: 'party',
     gametopic: 'game',
