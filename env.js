@@ -7,6 +7,7 @@ module.exports = {
     loglevel: log.levels.DEBUG,
 
     // Mosca Server configuration
+    mosacacredentials : "/credentials.json",
     mosca: {
         port: 1884,
         persistence: server.persistence.Memory,
@@ -19,7 +20,9 @@ module.exports = {
     // MQTT configuration
     mqttoptions: {
         port: 1884,
-        clientId: 'Smartphone'
+        clientId: 'Smartphone',
+        username : "dietpi",
+        password : "infected"
     },
 
     // Regulation configuration

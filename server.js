@@ -1,5 +1,7 @@
 let mysql = require('mysql')
 let mosca = require('mosca')
+let fs = require("fs");
+let Authorizer = require("mosca/lib/authorizer");
 let dateFormat = require('dateformat')
 let log = require('loglevel')
 let env = require('./env')
@@ -54,11 +56,77 @@ function procsql(reqsql, params) {
 }
 
 // Start program
+// Accepts the connection if the username and password are valid
+var authenticate = function(client, username, password, callback) {
+    var authorized = (username === 'dietpi' && password.toString() === 'infected');
+    if (authorized) client.user = username;
+    callback(null, authorized);
+  }
+  
+  // In this case the client authorized as alice can publish to /users/alice taking
+  // the username from the topic and verifing it is the same of the authorized user
+  var authorizePublish = function(client, topic, payload, callback) {
+    callback(null, client.user == topic.split('/')[1]);
+  }
+  
+  // In this case the client authorized as alice can subscribe to /users/alice taking
+  // the username from the topic and verifing it is the same of the authorized user
+  var authorizeSubscribe = function(client, topic, callback) {
+    callback(null, client.user == topic.split('/')[1]);
+  }
+
+function setup() {
+    server.authenticate = authenticate;
+    server.authorizePublish = authorizePublish;
+    server.authorizeSubscribe = authorizeSubscribe;
+  }
+
+function setup() {
+    // setup authorizer
+    loadAuthorizer(env.mosacacredentials, function (err, authorizer) {
+        if (err) {
+            log.error(dateFormat(new Date(), env.date_format), 'Mosca authorizer error')
+        }
+
+        if (authorizer) {
+            server.authenticate = authorizer.authenticate;
+            server.authorizeSubscribe = authorizer.authorizeSubscribe;
+            server.authorizePublish = authorizer.authorizePublish;
+        }
+    });
+
+    // you are good to go!
+}
+
+function loadAuthorizer(credentialsFile, cb) {
+    if (credentialsFile) {
+        fs.readFile(credentialsFile, function (err, data) {
+            if (err) {
+                cb(err);
+                return;
+            }
+
+            var authorizer = new Authorizer();
+
+            try {
+                authorizer.users = JSON.parse(data);
+                cb(null, authorizer);
+            } catch (err) {
+                cb(err);
+            }
+        });
+    } else {
+        cb(null, null);
+    }
+}
+
 mosca = new mosca.Server(env.mosca, function () {
 })
-mosca.on('ready', function () {
-    log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
-})
+mosca.on('ready', setup); 
+//{
+//    log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
+//})
+
 mosca.on('subscribed', function (topic, client) {
     log.info(dateFormat(new Date(), env.date_format), 'Subscribed  ', client.id, topic)
 })
