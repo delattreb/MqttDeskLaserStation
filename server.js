@@ -100,9 +100,18 @@ function loadAuthorizer(credentialsFile, cb) {
 }
 
 function setup() {
-    mosca.authenticate = authenticate;
-    mosca.authorizePublish = authorizePublish;
-    mosca.authorizeSubscribe = authorizeSubscribe;
+    // setup authorizer
+    loadAuthorizer(env.mosacacredentials, function (err, authorizer) {
+        if (err) {
+            // handle error here
+        }
+
+        if (authorizer) {
+            mosca.authenticate = authorizer.authenticate;
+            mosca.authorizeSubscribe = authorizer.authorizeSubscribe;
+            mosca.authorizePublish = authorizer.authorizePublish;
+        }
+    });
     log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
 }
 
