@@ -7,15 +7,16 @@ module.exports = {
     loglevel: log.levels.DEBUG,
 
     // Mosca Server configuration
-    mosacacredentials: "/home/dietpi/MqttDeskLaserStation/credentials.json",
+    mosacacredentials: '/home/dietpi/MqttDeskLaserStation/credentials.json',
     mosca: {
         port: 8444,
         persistence: server.persistence.Memory,
         logger: {
             name: 'MoscaServer',
-            //level: 'debug'
+            level: 'debug'
         },
         secure: {
+            port: 8444,
             keyPath: '/home/dietpi/certs/MyKey.key',
             certPath: '/home/dietpi/certs/MyCertificate.crt'
         },
