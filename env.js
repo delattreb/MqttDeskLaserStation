@@ -17,6 +17,7 @@ module.exports = {
             certPath: "/home/dietpi/certs/MyCertificate.crt"
         },
         logger: {
+            name: 'MoscaServer',
             level: 'debug'
           }
     },

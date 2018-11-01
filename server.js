@@ -57,31 +57,33 @@ function procsql(reqsql, params) {
 
 // Start program
 // Accepts the connection if the username and password are valid
-var authenticate = function(client, username, password, callback) {
+var authenticate = function (client, username, password, callback) {
     var authorized = (username === 'dietpi' && password.toString() === 'infected');
     if (authorized) client.user = username;
     callback(null, authorized);
-  }
-  
-  // In this case the client authorized as alice can publish to /users/alice taking
-  // the username from the topic and verifing it is the same of the authorized user
-  var authorizePublish = function(client, topic, payload, callback) {
+}
+
+// In this case the client authorized as alice can publish to /users/alice taking
+// the username from the topic and verifing it is the same of the authorized user
+var authorizePublish = function (client, topic, payload, callback) {
+    //var auth = true;
     callback(null, client.user == topic.split('/')[1]);
-  }
-  
-  // In this case the client authorized as alice can subscribe to /users/alice taking
-  // the username from the topic and verifing it is the same of the authorized user
-  var authorizeSubscribe = function(client, topic, callback) {
+}
+
+// In this case the client authorized as alice can subscribe to /users/alice taking
+// the username from the topic and verifing it is the same of the authorized user
+var authorizeSubscribe = function (client, topic, callback) {
+    //var auth = true;
     callback(null, client.user == topic.split('/')[1]);
-  }
+}
 
 function setup() {
     server.authenticate = authenticate;
     server.authorizePublish = authorizePublish;
     server.authorizeSubscribe = authorizeSubscribe;
-  }
+}
 
-  function loadAuthorizer(credentialsFile, cb) {
+function loadAuthorizer(credentialsFile, cb) {
     if (credentialsFile) {
         fs.readFile(credentialsFile, function (err, data) {
             if (err) {
@@ -95,7 +97,6 @@ function setup() {
                 authorizer.users = JSON.parse(data);
                 cb(null, authorizer);
             } catch (err) {
-                log.error(dateFormat(new Date(), env.date_format), 'User error')
                 cb(err);
             }
         });
@@ -105,29 +106,22 @@ function setup() {
 }
 
 function setup() {
-    // setup authorizer
-    loadAuthorizer(env.mosacacredentials, function (err, authorizer) {
-        if (err) {
-            log.error(dateFormat(new Date(), env.date_format), 'Authorizer error')
-        }
-
-        if (authorizer) {
-            server.authenticate = authorizer.authenticate;
-            server.authorizeSubscribe = authorizer.authorizeSubscribe;
-            server.authorizePublish = authorizer.authorizePublish;
-        }
-    });
-
-    // you are good to go!
+    server.authenticate = authenticate;
+    server.authorizePublish = authorizePublish;
+    server.authorizeSubscribe = authorizeSubscribe;
+    log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running.  ')
 }
 
 mosca = new mosca.Server(env.mosca, function () {
 })
-mosca.on('ready', setup); 
+mosca.on('ready', setup);
 //{
 //    log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
 //})
 
+server.on("error", function (err) {
+    log.error(dateFormat(new Date(), env.date_format), 'Error  ', err)
+});
 mosca.on('subscribed', function (topic, client) {
     log.info(dateFormat(new Date(), env.date_format), 'Subscribed  ', client.id, topic)
 })
