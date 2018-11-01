@@ -85,7 +85,7 @@ function setup() {
     if (credentialsFile) {
         fs.readFile(credentialsFile, function (err, data) {
             if (err) {
-                log.error(dateFormat(new Date(), env.date_format), 'FS authorizer error')
+                log.error(dateFormat(new Date(), env.date_format), 'FS error')
                 cb(err);
                 return;
             }
@@ -96,7 +96,7 @@ function setup() {
                 authorizer.users = JSON.parse(data);
                 cb(null, authorizer);
             } catch (err) {
-                log.error(dateFormat(new Date(), env.date_format), 'FS user error')
+                log.error(dateFormat(new Date(), env.date_format), 'User error')
                 cb(err);
             }
         });
@@ -109,7 +109,7 @@ function setup() {
     // setup authorizer
     loadAuthorizer(env.mosacacredentials, function (err, authorizer) {
         if (err) {
-            log.error(dateFormat(new Date(), env.date_format), 'Mosca authorizer error')
+            log.error(dateFormat(new Date(), env.date_format), 'Authorizer error')
         }
 
         if (authorizer) {
