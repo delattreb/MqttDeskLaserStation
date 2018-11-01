@@ -112,7 +112,9 @@ function setup() {
 
 mosca = new mosca.Server(env.mosca, function () {
 })
-mosca.on('ready')
+mosca.on('ready', function () {
+    log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
+})
 mosca.on('subscribed', function (topic, client) {
     log.info(dateFormat(new Date(), env.date_format), 'Subscribed  ', client.id, topic)
 })
