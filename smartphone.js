@@ -2,7 +2,6 @@ let mqtt = require('mqtt')
 let env = require('./env')
 let credential = require('./credentials')
 
-env.mqttoptions.emiter = 'SmartPhoneBruno'
 let clientMqtt = mqtt.connect(credential.address, env.mqttoptions)
 
 clientMqtt.publish(env.teamtopic, JSON.stringify({ jacket: "5C:CF:7F:6B:45:C6", r: "100", g: "0", b: "0", lum: "50", pseudo: "oneshoot", id: "12" }))

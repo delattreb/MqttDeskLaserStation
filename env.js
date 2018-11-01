@@ -16,7 +16,7 @@ module.exports = {
         }
     },
 
-    // MQTT regulation
+    // MQTT configuration
     mqttoptions: {
         port: 1884,
         clientId: 'Smartphone'
@@ -27,6 +27,8 @@ module.exports = {
     gametopic: 'game',
     teamtopic: 'team',
     starttopic: 'start',
+
+    // Date format
     date_format: "dd/mm/yyyy H:MM:ss",
     mysql_date: "yyyy-mm-dd H:MM:ss"
 }
