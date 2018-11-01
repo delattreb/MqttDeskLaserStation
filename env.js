@@ -13,7 +13,7 @@ module.exports = {
         persistence: server.persistence.Memory,
         logger: {
             name: 'MoscaServer',
-            level: 'info'
+            //level: 'debug'
         },
         //secure: {
         //    port: 8444,
@@ -24,6 +24,7 @@ module.exports = {
 
     // MQTT configuration
     mqttoptions: {
+        port: 1884,
         clientId: 'Smartphone',
         username: "dietpi",
         password: "infected",
