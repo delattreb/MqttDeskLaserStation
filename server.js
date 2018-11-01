@@ -82,9 +82,6 @@ function setup() {
 
 mosca = new mosca.Server(env.mosca)
 mosca.on('ready', setup)
-mosca.on("error", function (err) {
-    log.error(dateFormat(new Date(), env.date_format), 'Error  ')
-})
 mosca.on('subscribed', function (topic, client) {
     log.info(dateFormat(new Date(), env.date_format), 'Subscribed  ', client.id, topic)
 })
