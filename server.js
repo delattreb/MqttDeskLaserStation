@@ -90,11 +90,11 @@ function setup() {
             mosca.authorizePublish = authorizer.authorizePublish;
         }
     });
-    log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
 }
 
 mosca = new mosca.Server(env.mosca, setup)
 mosca.on('ready', function () {
+    log.info(dateFormat(new Date(), env.date_format), 'Mosca server is up and running')
 })
 mosca.on('error', function (err) {
     log.info(dateFormat(new Date(), env.date_format), 'Error       ', err)
