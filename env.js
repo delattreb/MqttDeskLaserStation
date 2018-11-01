@@ -16,7 +16,7 @@ module.exports = {
             level: 'debug'
         },
         secure: {
-            port: 1884,
+            port: 8444,
             keyPath: '/home/dietpi/certs/MyKey.key',
             certPath: '/home/dietpi/certs/MyCertificate.crt'
         },
@@ -24,10 +24,11 @@ module.exports = {
 
     // MQTT configuration
     mqttoptions: {
-        port: 1884,
+        port: 8444,
+        certPath: '/home/dietpi/certs/MyCertificate.crt',
         clientId: 'Smartphone',
         username: "dietpi",
-        password: "infected"
+        password: "infected",
     },
 
     // Regulation configuration
