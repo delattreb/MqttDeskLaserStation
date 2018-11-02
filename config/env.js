@@ -35,6 +35,7 @@ module.exports = {
     gametopic: 'game',
     teamtopic: 'team',
     starttopic: 'start',
+    stoptopic: 'stop',
 
     // Date format
     date_format: "dd/mm/yyyy H:MM:ss",
