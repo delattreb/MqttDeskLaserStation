@@ -1,10 +1,8 @@
-// Configuration file
-let log = require('loglevel')
 let server = require('mosca')
 
 module.exports = {
-    // Log Level Configuration
-    loglevel: log.levels.DEBUG,
+    // Log Level Configuration Trace:0 Debug:1 Info:2 Warning:3 Error:4 Silent:5
+    loglevel: 1,
 
     // Mosca Server configuration
     mosacacredentials: '/home/dietpi/MqttDeskLaserStation/credentials.json',
