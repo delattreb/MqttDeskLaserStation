@@ -1,4 +1,4 @@
-global.rootPath = __dirname;
+global.rootPath = __dirname
 
 let env = require(`${rootPath}/config/env`)
 global.log = require('loglevel')
