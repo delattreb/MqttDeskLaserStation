@@ -1,6 +1,7 @@
+global.rootPath = __dirname;
 let mqtt = require('mqtt')
-let env = require('./env')
-let credential = require('./credentials')
+let credential = require(`${rootPath}/config/credentials`);
+let env = require(`${rootPath}/config/env`);
 
 let clientMqtt = mqtt.connect(credential.address, env.mqttoptions)
 

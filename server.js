@@ -1,9 +1,9 @@
 global.rootPath = __dirname;
 
-let env = require(`${rootPath}/env`)
+let env = require(`${rootPath}/config/env`)
 global.log = require('loglevel')
 
-let sql = require('./sql')
-let mosca = require('./mosca')
+let sql = require('./lib/sql')
+let mosca = require('./lib/mosca')
 
 log.setDefaultLevel(env.loglevel)
