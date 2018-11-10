@@ -24,8 +24,13 @@ module.exports = {
     mqttoptions: {
         port: 1884,
         clientId: 'Smartphone',
-        username: "dietpi",
-        password: "infected",
+        username: 'dietpi',
+        password: 'infected',
+    },
+
+    api: {
+        url: '127.0.0.1',
+        port: 1337
     },
 
     // Regulation configuration
@@ -36,6 +41,6 @@ module.exports = {
     stoptopic: 'stop',
 
     // Date format
-    date_format: "dd/mm/yyyy H:MM:ss",
-    mysql_date: "yyyy-mm-dd H:MM:ss"
+    date_format: 'dd/mm/yyyy H:MM:ss',
+    mysql_date: 'yyyy-mm-dd H:MM:ss'
 }
